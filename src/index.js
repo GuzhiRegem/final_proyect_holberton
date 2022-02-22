@@ -9,6 +9,7 @@ import { Company } from "./components/Company";
 import { MapView } from "./components/Map";
 import { App } from "./App";
 import './index.css';
+import '../node_modules/mapbox-gl-controls/lib/controls.css';
 import mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
  
 mapboxgl.accessToken = 'pk.eyJ1IjoiYm9saW9saWFndXN0aW4iLCJhIjoiY2t6eDVzcWY5NDJoNTJucW9xaHY2bXA2dCJ9.ZR3iXpsXSNMjzh9Nj-0EDQ';
