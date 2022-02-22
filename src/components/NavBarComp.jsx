@@ -1,28 +1,33 @@
-import React, { Component } from "react";
-import { Navbar, Nav, NavDropdown,Form,FormControl,Button} from "react-bootstrap";
+import React from "react";
+import { Navbar, Nav } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import Logo from '../images/logo.svg';
 
-export class NavbarComp extends Component {
-  render() {
+export const NavbarComp  = () => {
     return (
         <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">
-            <img width="50px" className="d-inline-block align-top" src={Logo}  alt="logo" />
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <LinkContainer to="/">
+            <Navbar.Brand>
+                <img width="50px" src={Logo}  alt="logo" style={{ margin:"0px 0px 0px 10px" }} />
+            </Navbar.Brand>
+          </LinkContainer>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ margin:"0px 10px 0px 0px" }} />
         <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">
-        <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#link">Link</Nav.Link>
-        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-          <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-        </NavDropdown>
+        <Nav className="justify-content-end "style={{ width: "98%" }}>
+        <LinkContainer to="/Company">
+          <Nav.Link>Company</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/Contact">
+          <Nav.Link>Contact</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/Login">
+          <Nav.Link>Login</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/Map">
+          <Nav.Link>Map</Nav.Link>
+        </LinkContainer>
       </Nav>
-    </Navbar.Collapse>
+      </Navbar.Collapse>
+      
     </Navbar>
     )}
-}
