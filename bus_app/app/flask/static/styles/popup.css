@@ -1,0 +1,24 @@
+.maplibregl-popup-content {
+	height: 100px;
+	width: 150px;
+	display: grid;
+	padding: 0px;
+	place-items: center;
+	pointer-events: none;
+	overflow: hide;
+	border: solid black 2px;
+}
+.maplibregl-popup-content * {
+	width: 100%;
+	height: 100%;
+	display:grid;
+	place-items: center;
+	text-align: center
+}
+.maplibregl-popup-tip {
+	background-color: black;
+	width: 10px;
+	height: 10px;
+	border: solid black 2px;
+	border-radius: 4px;
+}

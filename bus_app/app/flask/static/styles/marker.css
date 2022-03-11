@@ -1,0 +1,41 @@
+.marker {
+	width: 15px;
+	height: 15px;
+	background-color: white;
+	border-radius: 50%;
+	border: rgba(0, 0, 0, 0.58) solid 2px;
+	transition: width 1s ease;
+	transition: height 1s ease;
+	transition: border-width 1s ease;
+	background-clip: padding-box;
+}
+.marker:active {
+	border-width: 10px;
+	width: 20px;
+	height: 20px;
+}
+.maplibregl-popup {
+	transition: opacity 0.5s ease;
+}
+.stop {
+	width: 25px;
+	height: 25px;
+	background-color: rgba(255, 230, 2, 0.6);
+	border: rgba(79, 79, 79, 0.58) solid 2px;
+	border-radius: 50%;
+	background-clip: padding-box;
+	z-index: 1;
+}
+.bus {
+	width: 30px;
+	height: 30px;
+	background-color: rgba(121, 225, 9, 0.58);
+	border: rgba(79, 79, 79, 0.58) solid 2px;
+	border-radius: 50%;
+	background-image: url('../images/bus.png');
+	background-size: 25px 25px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-clip: padding-box;
+	z-index:100;
+}
