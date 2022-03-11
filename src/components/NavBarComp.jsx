@@ -1,14 +1,14 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import Logo from '../images/logo.svg';
+import Logo from '../images/logo.png';
 
 export const NavbarComp  = () => {
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar className="nav-bar" expand="lg">
           <LinkContainer to="/">
             <Navbar.Brand>
-                <img width="50px" src={Logo}  alt="logo" style={{ margin:"0px 0px 0px 10px" }} />
+                <img width="50px" src={Logo}  alt="logo" />
             </Navbar.Brand>
           </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ margin:"0px 10px 0px 0px" }} />
