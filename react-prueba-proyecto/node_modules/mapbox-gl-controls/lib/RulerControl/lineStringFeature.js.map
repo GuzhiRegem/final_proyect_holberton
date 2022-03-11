@@ -1,0 +1,1 @@
+{"version":3,"file":"lineStringFeature.js","sourceRoot":"","sources":["../../src/RulerControl/lineStringFeature.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,UAAU,iBAAiB,CAAC,WAAuB;IAC/D,OAAO;QACL,IAAI,EAAE,SAAS;QACf,UAAU,EAAE,EAAE;QACd,QAAQ,EAAE;YACR,IAAI,EAAE,YAAY;YAClB,WAAW;SACZ;KACF,CAAC;AACJ,CAAC"}

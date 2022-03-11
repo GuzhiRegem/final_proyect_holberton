@@ -1,0 +1,9 @@
+{
+    "name": "Holberton School",
+    "coords": [-56.078608, -34.788674],
+    "src": "src/holberton.html",
+    "zoom": {
+        "min": 12.5,
+        "max": 19
+    }
+}

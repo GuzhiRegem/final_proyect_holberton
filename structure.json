@@ -1,0 +1,42 @@
+{
+	"users": [
+		{
+			"_id": "uid1",
+			"username": "copsa",
+			"email": "copsa@gmail.com",
+			"key": "here goes the public key",
+			"name": "Copsa",
+			"rutas": [
+				"uid2"
+			]
+		}
+	],
+	"rutas":[
+		{
+			"_id": "uid2",
+			"owner": "uid1",
+			"points": [
+				[0, 0],
+				[1, 0]
+			]
+		}
+	],
+	"paradas":[
+		{
+			"_id": "uid3",
+			"pos": [0, 0],
+			"lineas": [
+				"uid2"
+			]
+		}
+	],
+	"buses":[
+		{
+			"_id": "uid4",
+			"pos": [0, 0],
+			"linea": "uid2",
+			"asientos": 30,
+			"pasajeros": 23
+		}
+	]
+}

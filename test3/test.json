@@ -1,0 +1,25 @@
+{
+	'content': [
+		{
+			'id': 0,
+			'x': 0,
+			'y': 0,
+			'name': 'test',
+			'content': '<div>hola</div>'
+		},
+		{
+			id: 0,
+			x: 0,
+			y: 0,
+			name: 'test',
+			content: '<div>hola</div>'
+		},
+		{
+			id: 0,
+			x: 0,
+			y: 0,
+			name: 'test',
+			content: '<div>hola</div>'
+		}
+	]
+}

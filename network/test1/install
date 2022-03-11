@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+W_DEV=$(ifconfig | grep wl | cut -d' ' -f1)
+apt-get -y install hostapd
+echo 'DAEMON_CONF="/etc/hostapd/hostapd.conf"' >> /etc/default/hostapd
+./make_hostapd_config ${W_DEV:0:-1}
+hostapd -d hostapd.conf
