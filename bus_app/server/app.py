@@ -434,10 +434,13 @@ def get_point(id):
 
 @app.route("/api/points/radius/<x>/<y>/<radius>", methods=['GET'])
 def get_points_radius(x, y, radius):
-    out = []
-    for obj in Point.objects(position__geo_within_center=[(x, y), radius]):
-        out.append(obj.to_dict())
-    return jsonify(out), 200, {'ContentType':'application/json'}
+    try:
+        out = []
+        for obj in Point.objects(position__geo_within_center=[(float(x), float(y)), float(radius)]):
+            out.append(obj.to_dict())
+        return jsonify(out), 200, {'ContentType':'application/json'}
+    except Exception as e:
+        return str(e)
 
 @app.route("/api/points/add", methods=['POST'])
 def add_points():
