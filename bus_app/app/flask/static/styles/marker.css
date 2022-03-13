@@ -3,7 +3,7 @@
 	height: 15px;
 	background-color: white;
 	border-radius: 50%;
-	border: rgba(0, 0, 0, 0.58) solid 2px;
+	border: rgba(255, 255, 255, 0.70) solid 2px;
 	transition: width 1s ease;
 	transition: height 1s ease;
 	transition: border-width 1s ease;

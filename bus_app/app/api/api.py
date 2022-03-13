@@ -107,7 +107,7 @@ def get_radius_stops():
     print("started")
     for stop in bus_stops:
         print(stop)
-        radius = requests.get(domain + "/api/points/radius/{}/{}/0.5".format(stop[0], stop[1]))
+        radius = requests.get(domain + "/api/points/radius/{}/{}/0.3".format(stop[0], stop[1]))
         j = json.loads(radius.text)
         for obj in j:
             if obj["_id"] in ids:
@@ -150,7 +150,7 @@ class Point_api(object):
     @cherrypy.expose
     def index(self):
         out = []
-        for obj in Point.objects(position__geo_within_center=[(bus_coords[0], bus_coords[1]), 0.3]):
+        for obj in Point.objects(position__geo_within_center=[(bus_coords[0], bus_coords[1]), 0.003]):
             out.append(obj.to_dict())
         return json.dumps(out)
 

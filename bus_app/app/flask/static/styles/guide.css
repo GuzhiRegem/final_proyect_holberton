@@ -1,0 +1,22 @@
+#guide_container {
+	z-index: 20000;
+    position: absolute;
+    bottom: 0px;
+    height: 150px;
+    width: 150px;
+}
+#guide_container * {
+	height: 100%;
+    position: absolute;
+}
+#guide_head {
+    top: -65%;
+}
+#guide_left_arm {
+	left: -24%;
+	transform-origin: 49% 27%;
+}
+#guide_right_arm {
+	left: +26%;
+	transform-origin: 49% 27%;
+}

@@ -7,14 +7,17 @@
 from flask import Flask, render_template
 app = Flask(__name__)
 from flask_cors import CORS
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app, resources={
+		r"/*": {"origins": "*"}
+	}
+)
 
 
-@app.route('/map')
+@app.route('/')
 def hello():
     return render_template('index.html')
 
-@app.route('/')
+@app.route('/connect')
 def conn():
     return render_template('login.html')
 

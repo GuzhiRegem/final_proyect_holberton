@@ -2,3 +2,4 @@ cherrypy
 cherrypy-cors
 flask
 flask-cors
+mongoengine
