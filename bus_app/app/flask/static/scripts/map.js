@@ -1,4 +1,4 @@
-const domain = '10.42.0.1';
+const domain = 'localhost';
 let colorObj = {
 	list: [
 		'#FF5964',
@@ -86,7 +86,8 @@ const updateSource = setInterval(async () => {
 	const geojson = await getLocation();
 	busLoc = geojson.position;
 	stopLoc = geojson.next_stop;
-}, 100);
+	sliderObj.update(time);
+}, 2000);
 
 let time = 0;
 const FrameLoop = setInterval(function () {
@@ -100,7 +101,6 @@ const FrameLoop = setInterval(function () {
 	const out = [(busLoc[0] - act.lng) / 10, (busLoc[1] - act.lat) / 10];
 	bus.setLngLat([act.lng + out[0], act.lat + out[1]]);
 	stop.setLngLat([stopLoc[0], stopLoc[1]]);
-	guideObj.update(time);
 }, 20);
 
 const CameraLoop = setInterval(function () {
@@ -173,6 +173,7 @@ function showPoints(points) {
 	for (let i = 0; points[i]; i++) { idList.push(points[i]._id); }
 	for (let i = 0; popupList[i]; i++) {
 		if (!idList.includes(popupList[i]._id)) {
+			sliderObj.remove(popupList[i].square);
 			popupList[i].popup.remove();
 			popupList[i].remove();
 			popupList.splice(i, 1);
@@ -194,6 +195,9 @@ function showPoints(points) {
 		popup.isVisible = false;
 		const markDiv = document.createElement('div');
 		markDiv.style.backgroundColor = colorObj.list[colorObj.idx];
+		const liEle = document.createElement('li');
+		liEle.innerHTML = points[i].content;
+		liEle.style.borderColor = colorObj.list[colorObj.idx];
 		colorObj.idx++;
 		if (colorObj.idx >= colorObj.list.length) {colorObj.idx = 0;}
 		markDiv.className = 'marker';
@@ -212,7 +216,9 @@ function showPoints(points) {
 				marker.popup.getElement().style.opacity = '0%';
 			}
 		}
+		sliderObj.add(liEle);
 		marker.getElement().addEventListener('click', marker.clickF);
+		marker.square = liEle;
 		popupList.push(marker);
 	}
 }

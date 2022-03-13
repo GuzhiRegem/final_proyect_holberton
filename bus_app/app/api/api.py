@@ -162,12 +162,12 @@ if __name__ == "__main__":
         }
     username = input("username: ")
     response = requests.get(domain + "/api/users/" + username + "/buses/")
-    print(response.text)
+    print(json.dumps(json.loads(response.text), indent=4, sort_keys=4))
     if (response.status_code != 200):
         exit()
     bus_input = input("bus: ")
     response = requests.get(domain + "/api/buses/get/" + bus_input)
-    print(response.text)
+    print(json.dumps(json.loads(response.text), indent=4, sort_keys=4))
     if (response.status_code != 200):
         exit()
     bus_id = json.loads(response.text)["_id"]
