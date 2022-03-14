@@ -130,7 +130,7 @@ const CameraLoop = setInterval(function () {
       let objective = bus.actual;
       if (exploreObj.actual) {
         const pos = [exploreObj.actual.getLngLat().lng, exploreObj.actual.getLngLat().lat];
-        const diff = [(pos[0] - objective[0]) * 0.75, (pos[1] - objective[1]) * 0.75];
+        const diff = [(pos[0] - objective[0]) * 0.5, (pos[1] - objective[1]) * 0.5];
         objective = [objective[0] + diff[0], objective[1] + diff[1]];
       }
       const diff = [(objective[0] - cameraObj.position[0]) / 100, (objective[1] - cameraObj.position[1]) / 100];
@@ -152,9 +152,6 @@ const exploreObj = {
 exploreObj.update = function () {
   if (!isFollowing) { return; }
   if (exploreObj.actual) {
-    if (exploreObj.actual.popup.isVisible) {
-      exploreObj.actual.clickF();
-    }
     exploreObj.idx++;
     if (exploreObj.idx >= popupList.length) { exploreObj.idx = 0; }
   } else {
@@ -213,6 +210,10 @@ async function addRoute(map) {
   boundTo(lis, 4000);
 }
 
+const pointsObj = {
+  actual: undefined
+}
+
 function showPoints(points) {
   idList = [];
   popIdList = [];
@@ -236,7 +237,7 @@ function showPoints(points) {
       closeButton: false,
       closeOnClick: false
     })
-      .setHTML(points[i].content)
+      .setHTML('?')
       .setLngLat(points[i].position.coordinates)
       .addTo(map);
     popup.isVisible = false;
@@ -253,21 +254,26 @@ function showPoints(points) {
     markDiv.style.backgroundColor = marker.color;
     marker._id = points[i]._id;
     marker.clickF = function () {
+      if (pointsObj.actual !== marker) {
+        if (pointsObj.actual) {
+          pointsObj.actual.clickF();
+        }
+      } else {
+        pointsObj.actual = undefined;
+      }
+      pointsObj.actual = marker;
       marker.popup.isVisible = !marker.popup.isVisible;
       const child = marker.popup.getElement().querySelectorAll('*');
-      const tip = child[0];
       const cont = child[1];
       if (marker.popup.isVisible) {
         marker.popup.getElement().style.pointerEvents = 'auto';
         marker.popup.getElement().style.opacity = '100%';
-        tip.style.transform = 'scale(0.1, 1.0)';
         cont.style.transform = 'scale(1.0)';
         marker.getElement().style.backgroundColor = 'black';
         marker.getElement().style.opacity = '100%';
       } else {
         marker.popup.getElement().style.pointerEvents = 'none';
         marker.popup.getElement().style.opacity = '0%';
-        tip.style.transform = 'scale(0.0, 0.0)';
         cont.style.transform = 'scale(0.0)';
         marker.getElement().style.backgroundColor = marker.color;
         marker.getElement().style.opacity = '60%';
@@ -279,7 +285,7 @@ function showPoints(points) {
       setTimeout(function () {
         marker.popup.remove();
         marker.remove();
-      }, 1000);
+      }, 500);
     };
     marker.getElement().addEventListener('click', marker.clickF);
     popupList.push(marker);
@@ -301,4 +307,5 @@ map.on('load', () => {
   bus.objective = getLocation().position;
   getPoints()
   document.querySelector('#map').style.opacity = "100%";
+  popupObj.setSize();
 });

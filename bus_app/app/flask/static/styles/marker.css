@@ -7,7 +7,9 @@
 	transition: width 1s ease;
 	transition: height 1s ease;
 	transition: border-width 1s ease;
+	transition: opacity 1s ease;
 	background-clip: padding-box;
+	opacity: 60%;
 }
 .marker:active {
 	border-width: 10px;
