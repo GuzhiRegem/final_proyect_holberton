@@ -13,7 +13,7 @@ popupObj.setSize = function () {
     this.obj.style.height = '30%';
     if (map) {
       map.setPadding({
-        bottom: window.innerWidth * 0.3,
+        bottom: window.innerHeight * 0.3,
         left: 0,
         right: 0,
         top: 0
@@ -28,7 +28,7 @@ popupObj.setSize = function () {
       map.setPadding({
         bottom: 0,
         left: 0,
-        right: 500,
+        right: window.innerWidth * 0.3,
         top: 0
       });
     }
