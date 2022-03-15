@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cp gunicorn.socket /etc/systemd/system/
+cp gunicorn.service /etc/systemd/system/
+systemctl enable --now gunicorn.socket

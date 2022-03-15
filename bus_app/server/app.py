@@ -215,7 +215,7 @@ def get_tokens():
             return "requred: username and password", 400
         found_list = User.objects(username__exact=req["username"])
         if len(found_list) <= 0:
-            return "not found", 400
+            return "user not found", 400
         obj = found_list.first().to_dict()
         req["password"] = sha256("{}{}".format(req["password"], req["username"]).encode('utf-8')).hexdigest()
         if (obj["password"] != req["password"]):
@@ -351,6 +351,37 @@ def get_route(id):
             return "not found", 400
         obj = u_list.first()
         return jsonify(obj.to_dict()), 200
+    except Exception as e:
+        return str(e), 400
+
+@app.route("/api/routes/data/<id>", methods=['GET'])
+def data_route(id):
+    try:
+        u_list = Route.objects(pk=id)
+        if len(u_list) == 0:
+            return "not found", 400
+        obj = u_list.first().to_dict()
+        out = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": obj["points"]
+                }
+            ]
+        }
+        for stop in obj["stops"]:
+            s_list = Stop.objects(pk=stop)
+            if len(s_list) == 0:
+                continue
+            tmp = s_list.first().to_dict()
+            out["features"].append({
+                "type": "Feature",
+                "properties": {},
+                "geometry": tmp["position"]
+            })
+        return jsonify(out), 200
     except Exception as e:
         return str(e), 400
 
