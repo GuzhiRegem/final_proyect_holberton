@@ -1,4 +1,4 @@
-const domain = 'localhost';
+const domain = '192.168.122.1';
 let colorObj = {
   list: [
     '#FF5964',
@@ -94,7 +94,7 @@ const updateSource = setInterval(async () => {
   stop.setLngLat(geojson.next_stop);
   stop.position = [stop.getLngLat[0], stop.getLngLat[1]];
   getPoints();
-  cameraObj.bearingObjective = -geojson.direction + 90;
+  cameraObj.bearingObjective = (Math.abs(geojson.direction));
 }, 2000);
 
 let time = 0;
@@ -114,9 +114,10 @@ const cameraObj = {
   position: [0, 0],
   zoom: 0,
   bearing: 0,
-  bearingObjective: 14
+  bearingObjective: 14,
+  zoomObjective: 17
 }
-const CameraLoop = setInterval(function () {
+cameraObj.update = function () {
   if (
     !map.dragRotate.isActive() &&
     !map.dragPan.isActive() &&
@@ -126,24 +127,28 @@ const CameraLoop = setInterval(function () {
     if (isStopFollowing) {
       boundTo([bus.objective, [stop.getLngLat().lng, stop.getLngLat().lat]], 1000);
     } else {
-      cameraObj.zoom += (17 - cameraObj.zoom) / 500;
+      cameraObj.zoom += (cameraObj.zoomObjective - cameraObj.zoom);
       let objective = bus.actual;
       if (exploreObj.actual) {
         const pos = [exploreObj.actual.getLngLat().lng, exploreObj.actual.getLngLat().lat];
         const diff = [(pos[0] - objective[0]) * 0.5, (pos[1] - objective[1]) * 0.5];
         objective = [objective[0] + diff[0], objective[1] + diff[1]];
       }
-      const diff = [(objective[0] - cameraObj.position[0]) / 100, (objective[1] - cameraObj.position[1]) / 100];
+      const diff = [(objective[0] - cameraObj.position[0]), (objective[1] - cameraObj.position[1])];
       cameraObj.position = [cameraObj.position[0] + diff[0], cameraObj.position[1] + diff[1]];
-      cameraObj.bearing += (cameraObj.bearingObjective - cameraObj.bearing) / 1000;
-      map.jumpTo({
+      cameraObj.bearing = cameraObj.bearingObjective;
+      console.log(cameraObj.padding);
+      map.easeTo({
         center: cameraObj.position,
         zoom: cameraObj.zoom,
-        bearing: cameraObj.bearing
+        bearing: cameraObj.bearing,
+        padding: cameraObj.padding,
+        duration: 2000
       });
     }
   }
-}, 10);
+};
+const CameraLoop = setInterval(cameraObj.update, 2000);
 
 const exploreObj = {
   idx: 0,
@@ -161,6 +166,7 @@ exploreObj.update = function () {
   if (exploreObj.actual) {
     if (!exploreObj.actual.popup.isVisible) {
       exploreObj.actual.clickF();
+      cameraObj.update();
     }
   }
 };
@@ -249,6 +255,7 @@ function showPoints(points) {
     const marker = new maplibregl.Marker(markDiv)
       .setLngLat(points[i].position.coordinates)
       .addTo(map);
+    marker.content = points[i].content;
     marker.popup = popup;
     marker.color = colorObj.list[colorObj.idx];
     markDiv.style.backgroundColor = marker.color;
@@ -256,10 +263,12 @@ function showPoints(points) {
     marker.clickF = function () {
       if (pointsObj.actual !== marker) {
         if (pointsObj.actual) {
-          pointsObj.actual.clickF();
+          if (pointsObj.actual.popup.isVisible) {
+            pointsObj.actual.clickF();
+          }
+        } else {
+          pointsObj.actual = undefined;
         }
-      } else {
-        pointsObj.actual = undefined;
       }
       pointsObj.actual = marker;
       marker.popup.isVisible = !marker.popup.isVisible;
@@ -277,6 +286,13 @@ function showPoints(points) {
         cont.style.transform = 'scale(0.0)';
         marker.getElement().style.backgroundColor = marker.color;
         marker.getElement().style.opacity = '60%';
+        if (pointsObj.actual === marker) {
+          pointsObj.actual = undefined;
+        }
+      }
+      console.log(pointsObj.actual);
+      if (popupObj) {
+        popupObj.update();
       }
     };
     marker.destroy = function () {
@@ -285,6 +301,9 @@ function showPoints(points) {
       setTimeout(function () {
         marker.popup.remove();
         marker.remove();
+        if (pointsObj.actual === marker) {
+          pointsObj.actual = undefined;
+        }
       }, 500);
     };
     marker.getElement().addEventListener('click', marker.clickF);
@@ -303,9 +322,9 @@ map.on('load', () => {
   map.removeLayer('poi-level-1');
   map.removeLayer('poi-level-2');
   map.removeLayer('poi-level-3');
+  popupObj.setSize();
   addRoute(map);
   bus.objective = getLocation().position;
-  getPoints()
+  getPoints();
   document.querySelector('#map').style.opacity = "100%";
-  popupObj.setSize();
 });

@@ -8,7 +8,7 @@
 	font-size: 20px;
 	border-radius: 50%;
 	overflow: hidden;
-	color: blanchedalmond;
+	color: whitesmoke;
 	background-color: black;
 }
 .maplibregl-popup * {
@@ -24,7 +24,8 @@
 }
 #popup {
 	position: absolute;
-    background-color: blanchedalmond;
+    background-color: black;
+	color: whitesmoke;
     bottom: 10px;
     right: 10px;
     border-radius: 20px;
@@ -34,4 +35,5 @@
 	font-weight: 700;
 	font-size: 20px;
 	transition: all 1s ease;
+	overflow: hidden;
 }

@@ -11,6 +11,7 @@ from vectors import Vec2
 import json
 cherrypy_cors.install()
 import requests
+import math
 from mongoengine import connect, Document, StringField, ListField, ObjectIdField, PointField
 connect("test")
 
@@ -25,6 +26,7 @@ bus_coords = Array('d', 2)
 idx_path = 0
 bus_path = []
 idx_stop = Value('i', 0)
+bus_dir = Value('d', 0)
 bus_stops = []
 
 def frame():
@@ -34,7 +36,9 @@ def frame():
     while(1):
         obj = Vec2(bus_path[idx_path][0], bus_path[idx_path][1])
         while((obj - act).module > 0.0000004):
-            vel = ((stop_vec - act).module)*4000 + 1
+            diff = obj - act
+            bus_dir.value = math.degrees(math.atan(diff.y / diff.x))
+            vel = ((stop_vec - act).module)*800 + 1
             if vel > 10:
                 vel = 10
             act += (obj - act).normalize() * 0.000000001 * vel
@@ -143,6 +147,7 @@ class State_api(object):
             "position": list(bus_coords),
             "next_stop": bus_stops[int(idx_stop.value)],
             "point_id": 0,
+            "direction": bus_dir.value,
             "config": config_obj
         })
 
@@ -150,7 +155,7 @@ class Point_api(object):
     @cherrypy.expose
     def index(self):
         out = []
-        for obj in Point.objects(position__geo_within_center=[(bus_coords[0], bus_coords[1]), 0.003]):
+        for obj in Point.objects(position__geo_within_center=[(bus_coords[0], bus_coords[1]), 0.002]):
             out.append(obj.to_dict())
         return json.dumps(out)
 
