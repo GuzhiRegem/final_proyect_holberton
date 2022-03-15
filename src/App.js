@@ -11,7 +11,6 @@ import { AuthProvider } from './components/context/AuthContext';
 import { MyRoutes } from './Pages/MyRoutes';
 import { MyPoints } from './Pages/MyPoints';
 import { MyBuses } from './Pages/MyBuses';
-import { MapRouteView } from './Pages/MapRouteView';
 
 
 export function App() { 
@@ -30,7 +29,6 @@ export function App() {
         <Route path="user/:user_name/MyRoutes/" element={<MyRoutes />} />
         <Route path="user/:user_name/MyBuses/" element={<MyBuses />} />
         <Route path="user/:user_name/MyPoints/" element={<MyPoints />} />
-        <Route path="route/:route_id" element={<MapRouteView />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       </AuthProvider>

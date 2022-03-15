@@ -24,8 +24,8 @@ export const Contact = () => {
       <div class="card-body">
         <h5 class="card-title">Diego Guarise</h5>
         <br />
-        <img src= {LinkColo} width="100px" height="100px" class="rounded float-start" />
-        <img src={GitColo} width="100px" height="100px" class="rounded float-end" />
+        <img src= {LinkColo} width="100px" height="100px" class="rounded float-start" alt="Diego Linkedin" />
+        <img src={GitColo} width="100px" height="100px" class="rounded float-end" alt="Diego Github" />
       </div>
     </div>
   </div>
@@ -35,8 +35,8 @@ export const Contact = () => {
       <div class="card-body">
         <h5 class="card-title">Sebastian Moreira</h5>
         <br />
-        <img src= {LinkSeba} width="100px" height="100px" class="rounded float-start" />
-        <img src={GitSeba} width="100px" height="100px" class="rounded float-end" />
+        <img src= {LinkSeba} width="100px" height="100px" class="rounded float-start" alt="Seba Linkedin" />
+        <img src={GitSeba} width="100px" height="100px" class="rounded float-end" alt="Seba Github" />
       </div>
     </div>
   </div>
@@ -46,8 +46,8 @@ export const Contact = () => {
       <div class="card-body">
         <h5 class="card-title">Agustin Bolioli</h5>
         <br />
-        <img src= {LinkAgus} width="100px" height="100px" class="rounded float-start" />
-        <img src={GitAgus} width="100px" height="100px" class="rounded float-end" />
+        <img src= {LinkAgus} width="100px" height="100px" class="rounded float-start" alt="Agustin Linkedin" />
+        <img src={GitAgus} width="100px" height="100px" class="rounded float-end" alt="Agustin Github" />
       </div>
     </div>
   </div>

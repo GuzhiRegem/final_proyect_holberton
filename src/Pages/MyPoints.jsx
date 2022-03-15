@@ -2,7 +2,6 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import { Table } from 'react-bootstrap'
 import { Apiurl } from '../services/apirest'
-import { useNavigate } from 'react-router-dom'
 
 export  class MyPoints extends Component {
 

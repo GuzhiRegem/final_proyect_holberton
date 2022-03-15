@@ -1,13 +1,12 @@
 import React from "react";
 import "../style/Company.css";
 import logo from "../images/Logo-hd.png";
-import { Container } from "react-bootstrap";
 
 export const Company = () => {
     return (
         <div className="container justify-content-center align-items-center Container">
         <div className="img-container">
-        <img src={logo} width="250px" />
+        <img src={logo} width="250px" alt="Logo" />
         </div>
         <h1>Tour-Me</h1>
         <h2>Who are we?</h2>

@@ -2,7 +2,9 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import { Table } from 'react-bootstrap'
 import { Apiurl } from '../services/apirest'
-import { useNavigate } from 'react-router-dom'
+import { ModalMap } from '../components/ModalMapView'
+import { ModalMapEdit } from '../components/ModalMapEdit'
+import 'reactjs-popup/dist/index.css';
 
 export  class MyRoutes extends Component {
 
@@ -17,19 +19,13 @@ export  class MyRoutes extends Component {
         axios.get(url)
         .then(res => {
             this.setState({data: res.data})
+
         })
       }
       componentDidMount() {
         this.getRoutes();
       }
-      
-      handelMapView = () => {
-        axios.get(Apiurl + "/api/routes/", { headers: { "token": localStorage.getItem("read_token") } })
-        .then(res => {
-          console.log(res)
-        })
-      }
-  
+       
   render() {
     return (
       <div>
@@ -49,9 +45,9 @@ export  class MyRoutes extends Component {
                 <tr key={Route._id}>
                   <td>{Route._id}</td>
                   <td>{Route.name}</td>
-                  <td> <button onClick={ this.handelMapView}> View</button> </td>
+                  <td> <ModalMap id={Route._id}  name={Route.name} /></td>
                   <td>
-                    <button className="btn btn-success" style={{"marginRight": "10px"}}>Edit</button>
+                    <ModalMapEdit id={Route._id}  name={Route.name} />
                     <button className="btn btn-danger">Delete</button>
                   </td>
                 </tr>

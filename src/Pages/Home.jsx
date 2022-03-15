@@ -1,7 +1,6 @@
 import React from "react";
 import  carousel3 from "../images/Carousel3.jpg";
 import  carousel4 from "../images/Carousel4.jpg";
-import  carousel5 from "../images/carousel5.jpg";
 import  carousel1 from "../images/Carousel1.jpg";
 import { Carousel } from "react-bootstrap";
 import "../style/Home.css";
@@ -15,6 +14,7 @@ export const Home = () => {
         <img
         className="d-block w-100"
         src={carousel1}
+        alt="First slide"
         />
         <Carousel.Caption>
         <h2>Routes</h2>
@@ -25,6 +25,7 @@ export const Home = () => {
         <img
         className="d-block w-100"
         src={carousel4}
+        alt="Second slide"
         />
     <Carousel.Caption>
       <h2>Lineas</h2>
@@ -35,6 +36,7 @@ export const Home = () => {
     <img
       className="d-block w-100"
       src={carousel3}
+      alt="Third slide"
     />
     <Carousel.Caption>
       <h2>Points</h2>

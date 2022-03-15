@@ -31,8 +31,9 @@ export function Login () {
     .then(res => {
       console.log(res)
       if (res.status === 200) {
-      localStorage.setItem("write_etoken", res.data.write_token);
+      localStorage.setItem("write_token", res.data.write_token);
       localStorage.setItem("read_token", res.data.read_token);
+      localStorage.setItem("username", user.username);
       Navigate("/user/" + user.username);
       }})
     .catch(err => {
