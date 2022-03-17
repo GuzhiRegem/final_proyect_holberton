@@ -7,7 +7,6 @@ import { Users } from "./Pages/Users";
 import { Home } from "./Pages/Home";
 import { NotFound } from './Pages/NotFound';
 import { NavbarComp } from "./components/NavBarComp";
-import { AuthProvider } from './components/context/AuthContext';
 import { MyRoutes } from './Pages/MyRoutes';
 import { MyPoints } from './Pages/MyPoints';
 import { MyBuses } from './Pages/MyBuses';
@@ -18,7 +17,6 @@ export function App() {
   return (
     <BrowserRouter>
       <NavbarComp />
-      <AuthProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
@@ -31,7 +29,6 @@ export function App() {
         <Route path="user/:user_name/MyPoints/" element={<MyPoints />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      </AuthProvider>
     </BrowserRouter>
   ); 
 }  

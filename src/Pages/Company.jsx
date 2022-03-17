@@ -6,7 +6,7 @@ export const Company = () => {
     return (
         <div className="container justify-content-center align-items-center Container">
         <div className="img-container">
-        <img src={logo} width="250px" alt="Logo" />
+        <img src={logo} alt="Logo" className="img-fluid" />
         </div>
         <h1>Tour-Me</h1>
         <h2>Who are we?</h2>

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RulerControl, StylesControl, ZoomControl, CompassControl } from 'mapbox-gl-controls';
 import "../style/map.css"
 import mapboxgl from 'mapbox-gl'
 
@@ -23,7 +22,7 @@ export  function MapboxGLMap() {
         const initializeMap = ({ setMap, mapContainer }) => {
             const map = new mapboxgl.Map({
               container: mapContainer.current,
-              style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
+              style: "mapbox://styles/guzhiregem/cl0r0cx8q001314lf04oe0pxs", // stylesheet location
               center: [lng, lat],
               zoom: zoom,
               pitch: 45
@@ -40,8 +39,10 @@ export  function MapboxGLMap() {
                     setZoom(map.getZoom().toFixed(2));
                   }
                 );
-
+                map.addControl(new mapboxgl.FullscreenControl());
+                  console.log(map);
                 //Add ruler control
+                /*
                 map.addControl(new RulerControl(), 'bottom-right');
                 map.on('ruler.on', () => console.log('%cruler.on', 'color: #3D5AFE'));
                 map.on('ruler.off', () => console.log('%cruler.off', 'color: #3D5AFE'));
@@ -67,6 +68,7 @@ export  function MapboxGLMap() {
             
                 // Add compass control
                 map.addControl(new CompassControl(), 'bottom-right');
+                */
                     };
                 
             if (!map) initializeMap({ setMap, mapContainer, lat, lng, zoom });
