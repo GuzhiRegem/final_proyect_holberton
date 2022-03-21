@@ -1,0 +1,6 @@
+tr:hover {
+	background-color: aqua;
+}
+tr:active {
+	background-color: blue;
+}

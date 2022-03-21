@@ -175,6 +175,15 @@ async function getLocation() {
   return out;
 }
 
+const updateFunc = async function () {
+  const response = await fetch('http://' + domain + ':5001/update/');
+  const r = await response.json();
+  console.log(r);
+  if (r) {
+    addRoute(map);
+  }
+}
+const updateLoop = setInterval(updateFunc, 3000)
 async function addRoute(map) {
   const response = await fetch('http://' + domain + ':5001/route/');
   const out = await response.json();

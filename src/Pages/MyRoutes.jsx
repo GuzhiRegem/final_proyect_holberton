@@ -45,7 +45,7 @@ export class MyRoutes extends Component {
                 <td>{route.name}</td>
                 <td> <MapRouteViewModal id={route._id} name={route.name} /></td>
                 <td> <MapRouteEditModal id={route._id} name={route.name} /></td>
-                <td> <button variant="danger">Delete</button></td>
+                <td><button variant="danger">Delete</button></td>
               </tr>
             ))}
           </tbody>

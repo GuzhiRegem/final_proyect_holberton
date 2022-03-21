@@ -87,9 +87,14 @@ stopDiv.style.zIndex = 100;
 const stop = new maplibregl.Marker(stopDiv)
   .setLngLat([-56.073358, -34.791454])
   .addTo(map);
-
+  
+let route_id = "";
 const updateSource = setInterval(async () => {
   const geojson = await getLocation();
+  if (geojson.route_id !== route_id) {
+    const tmp = await addRoute(map);
+    route_id = geojson.route_id;
+  }
   bus.objective = geojson.position;
   stop.setLngLat(geojson.next_stop);
   stop.position = [stop.getLngLat[0], stop.getLngLat[1]];
@@ -181,6 +186,21 @@ async function getLocation() {
 async function addRoute(map) {
   const response = await fetch('http://' + domain + ':5001/route/');
   const out = await response.json();
+  try {
+    map.removeLayer('bus_route_stops');
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    map.removeLayer('bus_route_line');
+  } catch (error) {
+    console.log(error);
+  }
+  try {
+    map.removeSource('bus_route');
+  } catch (error) {
+    console.log(error);
+  }
   map.addSource('bus_route', {
     type: 'geojson',
     data: out
@@ -323,7 +343,6 @@ map.on('load', () => {
   map.removeLayer('poi-level-2');
   map.removeLayer('poi-level-3');
   popupObj.setSize();
-  addRoute(map);
   bus.objective = getLocation().position;
   getPoints();
   document.querySelector('#map').style.opacity = "100%";

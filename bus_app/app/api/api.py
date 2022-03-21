@@ -12,8 +12,9 @@ import json
 cherrypy_cors.install()
 import requests
 import math
-from mongoengine import connect, Document, StringField, ListField, ObjectIdField, PointField
-connect("test")
+import datetime
+from mongoengine import connect, disconnect_all, Document, StringField, ListField, ObjectIdField, PointField
+connect('testdb2')
 
 cherrypy.config.update({
     'server.socket_host': '0.0.0.0',
@@ -28,8 +29,7 @@ bus_path = []
 idx_stop = Value('i', 0)
 bus_dir = Value('d', 0)
 bus_stops = []
-
-def frame():
+def frame(bus_id):
     act = Vec2(bus_path[0][0], bus_path[0][1])
     idx_path = 0
     stop_vec = Vec2(bus_stops[0][0], bus_stops[0][1])
@@ -56,42 +56,49 @@ def frame():
 
 
 domain = "http://35.237.138.76:5001"
-bus_id = ""
-def update_route():
-    r = requests.get(domain + "/api/buses/get/" + bus_id)
-    if r.status_code != 200:
+def update_route(data):
+    print("data: {}".format(data))
+    r1 = requests.get(domain + "/api/buses/get/" + data["bus_id"])
+    if r1.status_code != 200:
         print("invalid bus")
-        return False
-    r = requests.get(domain + "/api/routes/get/" + json.loads(r.text)["route"])
+        return {
+            "status": False,
+            "data": data
+        }
+    if (json.loads(r1.text)["route"] == data["route_id"]):
+        return {
+            "status": False,
+            "data": data
+        }
+    data["route_id"] = json.loads(r1.text)["route"]
+    print("new route: {}".format(data["route_id"]))
+    r = requests.get(domain + "/api/routes/data/" + json.loads(r1.text)["route"])
     if r.status_code != 200:
         print("invalid route")
-        return False
-    js = json.loads(r.text)
-    geojson = {
-        "type": "FeatureCollection",
-	"features": [
-            {
-		"type": "Feature",
-		"properties": {},
-	        "geometry": js["points"]
-            }
-        ]
-    }
-    for i in js["points"]["coordinates"]:
-        bus_path.append(i[:])
-    for stop_id in js["stops"]:
-        tmp = {
-            "type": "Feature",
-            "properties": {}, 
-            "geometry": {}
+        return {
+            "status": False,
+            "data": data
         }
-        r = requests.get(domain + "/api/stops/get/" + stop_id)
-        tmp["geometry"] = json.loads(r.text)["position"]
-        geojson["features"].append(tmp)
-        bus_stops.append(tmp["geometry"]["coordinates"][:])
-    txt = json.dumps(geojson, indent=4, sort_keys=True)
+    while len(bus_path):
+        bus_path.pop()
+    while len(bus_stops):
+        bus_stops.pop()
+    js = json.loads(r.text)
+    lis = js["features"][0]["geometry"]["coordinates"]
+    for point in lis:
+        bus_path.append(point[:])
+    bus_coords[0] = bus_path[0][0]
+    bus_coords[1] = bus_path[0][1]
+    for idx in range(1, len(js["features"])):
+        bus_stops.append(js["features"][idx]["geometry"]["coordinates"][:])
+    txt = json.dumps(js, indent=4, sort_keys=True)
     with open("data/route.json", "w") as f:
         f.write(txt)
+    return {
+        "status": True,
+        "data": data
+    }
+
 
 class Point(Document):
     owner = ObjectIdField(required=True)
@@ -105,22 +112,17 @@ class Point(Document):
         return out
 
 
-def get_radius_stops():
+def get_radius_stops(id):
     ids = []
-    objs = []
-    print("started")
-    for stop in bus_stops:
-        print(stop)
-        radius = requests.get(domain + "/api/points/radius/{}/{}/0.3".format(stop[0], stop[1]))
-        j = json.loads(radius.text)
-        for obj in j:
-            if obj["_id"] in ids:
-                continue
-            ids.append(obj["_id"])
-            objs.append(obj)
     Point.objects().delete()
-    for obj in objs:
-        del obj["_id"]
+    radius_raw = requests.get(domain + "/api/routes/points/{}".format(id))
+    r_list = json.loads(str(radius_raw.text))
+    for obj in r_list:
+        if obj["_id"] in ids:
+            continue
+        ids.append(obj["_id"])
+        if "_id" in obj:
+            del obj["_id"]
         p = Point(**obj)
         p.save()
         print(obj)
@@ -139,7 +141,11 @@ class Route_api(object):
             out = f.read()
         return out
 
-
+data = {
+    "bus_id": "",
+    "route_id": "",
+    "proc": None
+}
 class State_api(object):
     @cherrypy.expose
     def index(self):
@@ -148,7 +154,8 @@ class State_api(object):
             "next_stop": bus_stops[int(idx_stop.value)],
             "point_id": 0,
             "direction": bus_dir.value,
-            "config": config_obj
+            "config": config_obj,
+            "route_id": data["route_id"]
         })
 
 class Point_api(object):
@@ -158,6 +165,18 @@ class Point_api(object):
         for obj in Point.objects(position__geo_within_center=[(bus_coords[0], bus_coords[1]), 0.002]):
             out.append(obj.to_dict())
         return json.dumps(out)
+class Update_api(object):
+    @cherrypy.expose
+    def index(self):
+        var = dict(data)
+        res = update_route(var)
+        if not res["status"]:
+            return json.dumps({"changed": 0, "id": data["route_id"]})
+        res2 = get_radius_stops(var["route_id"])
+        data["route_id"] = res["data"]["route_id"]
+        data["proc"].join()
+        return json.dumps({"changed": 1, "id": data["route_id"]})
+        
 
 if __name__ == "__main__":
     config = {
@@ -175,16 +194,18 @@ if __name__ == "__main__":
     print(json.dumps(json.loads(response.text), indent=4, sort_keys=4))
     if (response.status_code != 200):
         exit()
-    bus_id = json.loads(response.text)["_id"]
-    update_route()
-    print(bus_stops)
-    print(bus_path)
-    get_radius_stops()
-    p = Process(target=frame)
-    p.start()
+    data["bus_id"] = json.loads(response.text)["_id"]
+    res = update_route(data)
+    if not res["status"]:
+        exit()
+    data = res["data"]
+    get_radius_stops(data["route_id"])
+    data["proc"] = Process(target=frame, args=(json.loads(response.text)["_id"],))
+    data["proc"].start()
     root = Root()
     root.state = State_api()
     root.route = Route_api()
     root.points = Point_api()
+    root.update = Update_api()
     cherrypy.quickstart(root, config=config)
-    p.join()
+    data["proc"].join()

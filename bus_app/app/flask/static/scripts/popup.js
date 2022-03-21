@@ -35,7 +35,14 @@ popupObj.setSize = function () {
         top: 0
       };
     }
-  }
+    qr = document.createElement('img');
+    qr.src = '../static/images/unnamed.png';
+    qr.style = 'position: absolute; left: 0px; bottom: 0px; width: 20vmin; height: 20vmin';
+    document.querySelector('body').appendChild(qr);
+    const updateLoop = setInterval(async () => {
+      const response = await fetch('http://' + domain + ':5001/update/');
+    }, 2000);
+}
   if (!isFollowing) {
     map.easeTo({
       padding: cameraObj.padding,

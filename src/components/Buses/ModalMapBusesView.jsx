@@ -1,35 +1,51 @@
-import React, { useState } from 'react';
-import { MapRouteView } from '../MapRouteView';
-import { Modal, Button } from 'react-bootstrap';
+import React from 'react';
+import { MapBusesView } from './MapBusesView';
+import { Modal, Button, Spinner } from 'react-bootstrap';
 
-export function ModalMapRouteView(props) {
-    const [show, setShow] = useState(false);
+export function ModalMapBusesView(props) {
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const onLoad = () => {
+      document.querySelector(".modal-body").removeChild(document.querySelector(".spinner-border"));
+    }
+
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Map of {props.name}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Spinner animation="border" variant="success" className="spinner-border"/>
+          <MapBusesView id={props.id} on_load={onLoad} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
   
+  export function MapBusesViewModal(props) {
+    const [modalShow, setModalShow] = React.useState(false);
+
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="primary" onClick={() => setModalShow(true)}>
           View
         </Button>
-  
-        <Modal show={show} onHide={handleClose} className="modal-map">
-          <Modal.Header closeButton>
-            <Modal.Title>Map of {props.name} </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="modal-map-body">
-            <MapRouteView id={props.id}/>
-            </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+
+        <ModalMapBusesView
+          show={modalShow}
+          id={props.id}
+          name={props.name}
+          onHide={() => setModalShow(false)}
+        />
       </>
     );
   }
