@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9d58e423.chunk.css",
+    "main.js": "/static/js/main.edd6da97.chunk.js",
+    "main.js.map": "/static/js/main.edd6da97.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/css/2.4ab2c649.chunk.css": "/static/css/2.4ab2c649.chunk.css",
+    "static/js/2.8c7e047e.chunk.js": "/static/js/2.8c7e047e.chunk.js",
+    "static/js/2.8c7e047e.chunk.js.map": "/static/js/2.8c7e047e.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.ee4438707621e5a353fb0c6e024137c0.js": "/precache-manifest.ee4438707621e5a353fb0c6e024137c0.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.4ab2c649.chunk.css.map": "/static/css/2.4ab2c649.chunk.css.map",
+    "static/css/main.9d58e423.chunk.css.map": "/static/css/main.9d58e423.chunk.css.map",
+    "static/media/Agus.png": "/static/media/Agus.d12baf09.png",
+    "static/media/Buses.png": "/static/media/Buses.e70b4ccf.png",
+    "static/media/Carousel1.jpg": "/static/media/Carousel1.205a7820.jpg",
+    "static/media/Carousel3.jpg": "/static/media/Carousel3.ee5819a8.jpg",
+    "static/media/Carousel4.jpg": "/static/media/Carousel4.7bfe3a64.jpg",
+    "static/media/Colo.png": "/static/media/Colo.85b9ac7b.png",
+    "static/media/GitAgus.jpeg": "/static/media/GitAgus.90ecd7f8.jpeg",
+    "static/media/GitDiego.jpeg": "/static/media/GitDiego.019dbd4a.jpeg",
+    "static/media/GitSeba.jpeg": "/static/media/GitSeba.faccc138.jpeg",
+    "static/media/LinkAgus.jpeg": "/static/media/LinkAgus.19fc3e31.jpeg",
+    "static/media/LinkDiego.jpeg": "/static/media/LinkDiego.117ec6e1.jpeg",
+    "static/media/LinkSeba.jpeg": "/static/media/LinkSeba.71a7a4cf.jpeg",
+    "static/media/Logo-hd.png": "/static/media/Logo-hd.a46e046d.png",
+    "static/media/Points.png": "/static/media/Points.818ea057.png",
+    "static/media/Routeimg.png": "/static/media/Routeimg.cfc4bc09.png",
+    "static/media/Seba.png": "/static/media/Seba.9d68cfa5.png"
+  }
+}
