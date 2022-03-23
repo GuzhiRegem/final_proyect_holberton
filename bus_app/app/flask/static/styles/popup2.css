@@ -37,3 +37,6 @@
 	transition: all 1s ease;
 	overflow: hidden;
 }
+#popup img {
+	width: 100%;
+}
