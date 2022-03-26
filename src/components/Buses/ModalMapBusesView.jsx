@@ -22,7 +22,10 @@ export function ModalMapBusesView(props) {
         </Modal.Header>
         <Modal.Body>
           <Spinner animation="border" variant="success" className="spinner-border"/>
-          <MapBusesView id={props.id} on_load={onLoad} />
+		      <div id="content-modal">
+            <h1> TEST: </h1>
+            <MapBusesView id={props.id} on_load={onLoad} />
+			    </div>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>Close</Button>

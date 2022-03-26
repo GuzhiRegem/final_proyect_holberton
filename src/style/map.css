@@ -17,6 +17,10 @@
   overflow: hidden;
 }
 
+.modal-body {
+	overflow-y: scroll;
+}
+
 .modal-backdrop{
   opacity: 0.4;
   width: 100%;

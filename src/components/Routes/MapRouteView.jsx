@@ -60,7 +60,7 @@ export function MapRouteView(id) {
             filter: ['==', '$type', 'Point']
           });
           const points = []
-          for (let i = 1; out.features[0].geometry.coordinates[i]; i++) {
+          for (let i = 0; out.features[0].geometry.coordinates[i]; i++) {
             points.push(out.features[0].geometry.coordinates[i])
           }
           var bounds = points.reduce(function (bounds, coord) {

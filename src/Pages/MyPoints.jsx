@@ -33,7 +33,6 @@ export class MyPoints extends Component {
             <tr>
               <th>id</th>
               <th>Line</th>
-              <th>View</th>
               <th>Accion</th>
             </tr>
           </thead>
@@ -43,8 +42,8 @@ export class MyPoints extends Component {
                 <tr key={Points._id}>
                   <td>{Points._id}</td>
                   <td>{Points.name}</td>
-                  <td> <button onClick={this.handelMapView}> View</button> </td>
                   <td>
+				  	<button onClick={this.handelMapView}> View</button>
                     <button className="btn btn-success" style={{ "marginRight": "10px" }}>Edit</button>
                     <button className="btn btn-danger">Delete</button>
                   </td>

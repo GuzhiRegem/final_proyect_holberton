@@ -33,6 +33,7 @@ export function Login () {
       if (res.status === 200) {
       localStorage.setItem("write_token", res.data.write_token);
       localStorage.setItem("read_token", res.data.read_token);
+      localStorage.setItem("userId", res.data._id);
       localStorage.setItem("username", user.username);
       Navigate("/user/" + user.username);
       }})

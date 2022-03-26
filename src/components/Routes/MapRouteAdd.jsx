@@ -7,14 +7,15 @@ import { Apiurl } from '../../services/apirest';
 import mapboxGlDraw from "@mapbox/mapbox-gl-draw";
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
-export function MapRouteEdit(props) {
+export function MapRouteAdd(props) {
 
   const mapContainer = useRef(null);
   const [map, setMap] = useState(null);
-  const [lng, setLng] = useState(-56.073358);
-  const [lat, setLat] = useState(-34.791454);
+  const [lng, setLng] = useState(-56.1724);
+  const [lat, setLat] = useState(-34.9023);
   const [zoom, setZoom] = useState(11);
 
+  props.updateFunction({ points: undefined, stops: undefined });
 
   useEffect(() => {
     mapboxgl.accessToken = "pk.eyJ1IjoiYm9saW9saWFndXN0aW4iLCJhIjoiY2t6eDVzcWY5NDJoNTJucW9xaHY2bXA2dCJ9.ZR3iXpsXSNMjzh9Nj-0EDQ"
@@ -49,16 +50,6 @@ export function MapRouteEdit(props) {
                   "idx": undefined
                 }
               })
-            }
-            if (stop_list) {
-              for (let i = 0; i < stop_list.length; i++) {
-                for (let j = 0; j < out.features.length; j++) {
-                  if (out.features[j].properties._id == stop_list[i]) {
-                    out.features[j].properties.state = "on"
-                    out.features[j].properties.idx = i
-                  }
-                }
-              }
             }
             map.addSource('bus_route', {
               type: 'geojson',
@@ -116,6 +107,7 @@ export function MapRouteEdit(props) {
           });
         const draw = new mapboxGlDraw({
           displayControlsDefault: false,
+          defaultMode: 'draw_line_string',
           styles: [
             {
               'id': 'lines',
@@ -171,35 +163,7 @@ export function MapRouteEdit(props) {
           ]
         });
         map.addControl(draw);
-		map.on('draw.modechange', (e) => {
-			if (draw.getMode() !== 'direct_select') {
-				draw.changeMode('direct_select', {featureId: draw.getAll().features[0].id});
-			}
-		});
         const stop_list = [];
-        url = Apiurl + "/api/routes/data/" + props.id
-        axios.get(url)
-          .then(res => {
-            const out = res.data
-            draw.add(out);
-            const points = []
-            for (let i = 0; out.features[0].geometry.coordinates[i]; i++) {
-              points.push(out.features[0].geometry.coordinates[i])
-            }
-            for (let i = 1; out.features[i]; i++) {
-              stop_list.push(out.features[i].properties._id);
-            }
-            var bounds = points.reduce(function (bounds, coord) {
-              return bounds.extend(coord);
-            }, new mapboxgl.LngLatBounds(points[0], points[0]));
-            map.fitBounds(bounds, {
-              padding: 50,
-              duration: 0
-            });
-			draw.changeMode('direct_select', {featureId: draw.getAll().features[0].id});
-            document.querySelector('.mapboxgl-canvas').style.opacity = '100%';
-            props.on_load();
-          })
         map.on('click', 'bus_route_stops', function (e) {
           const coordinates = e.features[0].properties._id;
           let data = map.getSource('bus_route')._data;
@@ -225,9 +189,9 @@ export function MapRouteEdit(props) {
             }
           }
           map.getSource('bus_route').setData(data);
-          let all_data = draw.getAll().features[0];
+          let all_data = draw.getAll().features[0].geometry;
           props.updateFunction({
-            route: all_data,
+            points: all_data,
             stops: stop_list
           });
         });
@@ -256,18 +220,24 @@ export function MapRouteEdit(props) {
             }
           }
           map.getSource('bus_route').setData(data);
-          let all_data = draw.getAll().features[0];
+          let all_data = draw.getAll().features[0].geometry;
           props.updateFunction({
-            route: all_data,
+            points: all_data,
             stops: stop_list
           });
         });
 
 
         map.on('draw.update', function (e) {
-          let data = draw.getAll().features[0];
-          props.updateFunction({ route: data, stops: stop_list });
+          let data = draw.getAll().features[0].geometry;
+          props.updateFunction({ points: data, stops: stop_list });
         });
+        map.on('draw.create', function (e) {
+          let data = draw.getAll().features[0].geometry;
+          props.updateFunction({ points: data, stops: stop_list });
+        });
+        document.querySelector('.mapboxgl-canvas').style.opacity = '100%';
+        props.on_load();
       });
     };
 

@@ -34,7 +34,6 @@ export class MyBuses extends Component {
 						<tr>
 							<th>id</th>
 							<th>Line</th>
-							<th>View</th>
 							<th>Accion</th>
 						</tr>
 					</thead>
@@ -44,9 +43,11 @@ export class MyBuses extends Component {
 								<tr key={Buses._id}>
 									<td>{Buses._id}</td>
 									<td>{Buses.wifi_name}</td>
-									<td> <MapBusesViewModal id={Buses._id} /></td>
-									<td> <MapBusesEditModal id={Buses._id} username={this.username}/></td>
-									<td> <button variant="danger">Delete</button></td>
+									<td>
+                    <MapBusesViewModal id={Buses._id} />
+									  <MapBusesEditModal id={Buses._id} username={this.username}/>
+									  <button variant="danger">Delete</button>
+                  </td>
 								</tr>
 							)
 						})}
