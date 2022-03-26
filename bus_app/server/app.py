@@ -221,6 +221,7 @@ def get_tokens():
         if (obj["password"] != req["password"]):
             return "wrong password", 400
         out = {
+            "_id": obj["_id"],
             "read_token": obj["read_token"],
             "write_token": obj["write_token"]
         }
@@ -378,12 +379,36 @@ def data_route(id):
             tmp = s_list.first().to_dict()
             out["features"].append({
                 "type": "Feature",
-                "properties": {},
+                "properties": {
+                    "_id": tmp["_id"]
+                },
                 "geometry": tmp["position"]
             })
         return jsonify(out), 200
     except Exception as e:
         return str(e), 400
+
+@app.route("/api/routes/points/<id>", methods=['GET'])
+def update_route(id):
+    try:
+        u_list = Route.objects(pk=id)
+        if len(u_list) == 0:
+            return "not found", 400
+        obj = u_list.first().to_dict()
+        out = []
+        for stop_id in obj["stops"]:
+            s_list = Stop.objects(pk=stop_id)
+            if len(s_list) == 0:
+                continue
+            stop = s_list.first().to_dict()
+            pos = stop["position"]["coordinates"]
+            rad = Point.objects(position__geo_within_center=[(pos[0], pos[1]), 0.3])
+            for point in rad:
+                out.append(point.to_dict())
+        return jsonify(out), 200
+    except Exception as e:
+        return str(e), 400
+    
 
 @app.route("/api/routes/add", methods=['POST'])
 def add_routes():
