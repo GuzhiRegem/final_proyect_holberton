@@ -70,7 +70,7 @@ export class MyRoutes extends Component {
 								<td>{route.name}</td>
 								<td>
 									<MapRouteViewModal id={route._id} name={route.name} />
-									<MapRouteEditModal id={route._id} name={route.name} />
+									<MapRouteEditModal id={route._id} name={route.name} update_func={this.getRoutes} />
 									<MapRouteDeleteModal id={route._id} name={route.name} remove_func={this.removeRoute}/>
 								</td>
 							</tr>

@@ -198,6 +198,7 @@ export function MapRouteEdit(props) {
             });
 			draw.changeMode('direct_select', {featureId: draw.getAll().features[0].id});
             document.querySelector('.mapboxgl-canvas').style.opacity = '100%';
+			props.updateFunction({ route: out.features[0].geometry, stops: stop_list });
             props.on_load();
           })
         map.on('click', 'bus_route_stops', function (e) {

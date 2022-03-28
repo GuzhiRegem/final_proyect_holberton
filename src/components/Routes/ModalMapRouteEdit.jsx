@@ -13,13 +13,21 @@ export function ModalMapRouteEdit(props) {
 	};
 
 	const saveChanges = () => {
-		let url = Apiurl + "/api/routes/edit/" + props.id
-		axios.put(url, { points: routeData.route.geometry.coordinates, stops: routeData.stops }, { headers: { "token": localStorage.getItem("write_token") } })
-		props.onHide()
+		const inp = document.querySelector('#InputLineName').value;
+		if (inp) {
+			let url = Apiurl + "/api/routes/edit/" + props.id
+			axios.put(url, {
+				points: routeData.route.geometry,
+				stops: routeData.stops,
+				name: inp
+			}, { headers: { "token": localStorage.getItem("write_token") } })
+			props.onHide()
+		}
 	};
 
 	const onLoad = () => {
 		document.querySelector(".modal-body").removeChild(document.querySelector(".spinner-border"));
+		document.querySelector('#InputLineName').value = props.name;
 	}
 
 	return (
@@ -31,10 +39,17 @@ export function ModalMapRouteEdit(props) {
 		>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
-					Map of {props.name}
+					Edit route
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
+				<h2>{props.id}</h2>
+				<form>
+					<div class="form-group">
+						<label for="exampleInputEmail1">Line name:</label>
+						<input type="email" class="form-control" id="InputLineName" aria-describedby="emailHelp" placeholder="Enter line name" />
+					</div>
+				</form>
 				<Spinner animation="border" variant="success" className="spinner-border" />
 				<MapRouteEdit id={props.id} updateFunction={updateChanges} on_load={onLoad} />
 			</Modal.Body>

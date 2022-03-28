@@ -17,16 +17,15 @@ export function ModalMapRouteView(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Map of {props.name}
+			View Route
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
+		<h3>id: <strong>{props.id}</strong></h3>
+		<h3>name: <strong>{props.name}</strong></h3>
           <Spinner animation="border" variant="success" className="spinner-border"/>
           <MapRouteView id={props.id} on_load={onLoad}/>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
       </Modal>
     );
   }

@@ -41,7 +41,6 @@ export function ModalMapRouteAdd(props) {
 			</Modal.Header>
 			<Modal.Body>
 				<Spinner animation="border" variant="success" className="spinner-border" />
-				<MapRouteAdd id={props.id} updateFunction={updateChanges} on_load={onLoad} />
 				<form>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Line name:</label>
@@ -49,6 +48,7 @@ export function ModalMapRouteAdd(props) {
 						<small id="emailHelp" class="form-text text-muted">Try to have different numbers between lines</small>
 					</div>
 				</form>
+				<MapRouteAdd id={props.id} updateFunction={updateChanges} on_load={onLoad} />
 			</Modal.Body>
 			<Modal.Footer>
 				<Button variant='secondary' onClick={props.onHide}>Close</Button>

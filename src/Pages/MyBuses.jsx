@@ -4,6 +4,8 @@ import { Table } from 'react-bootstrap'
 import { Apiurl } from '../services/apirest'
 import { MapBusesViewModal } from '../components/Buses/ModalMapBusesView'
 import { MapBusesEditModal } from '../components/Buses/ModalMapBusesEdit'
+import { MapBusesAddModal } from '../components/Buses/ModalMapBusesAdd'
+import { MapBusesDeleteModal } from '../components/Buses/ModalMapBusesDelete'
 
 export class MyBuses extends Component {
 
@@ -28,7 +30,7 @@ export class MyBuses extends Component {
 
 		return (
 			<div>
-				<h1>My Points</h1>
+				<h1>My Buses</h1>
 				<Table striped bordered hover>
 					<thead>
 						<tr>
@@ -44,15 +46,16 @@ export class MyBuses extends Component {
 									<td>{Buses._id}</td>
 									<td>{Buses.wifi_name}</td>
 									<td>
-                    <MapBusesViewModal id={Buses._id} />
-									  <MapBusesEditModal id={Buses._id} username={this.username}/>
-									  <button variant="danger">Delete</button>
-                  </td>
+										<MapBusesViewModal id={Buses._id} />
+										<MapBusesEditModal id={Buses._id} username={this.username} />
+										<MapBusesDeleteModal id={Buses._id} />
+									</td>
 								</tr>
 							)
 						})}
 					</tbody>
 				</Table>
+				<MapBusesAddModal/>
 			</div>
 		)
 	}

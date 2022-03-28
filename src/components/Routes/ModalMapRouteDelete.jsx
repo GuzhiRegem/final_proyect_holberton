@@ -44,7 +44,7 @@ export function MapRouteDeleteModal(props) {
 
   return (
     <>
-      <Button variant="success" onClick={() => setModalShow(true)}>
+      <Button variant="danger" onClick={() => setModalShow(true)}>
         Delete
       </Button>
 
